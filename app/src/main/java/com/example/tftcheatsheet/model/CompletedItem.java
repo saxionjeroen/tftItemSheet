@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.tftcheatsheet.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,5 +79,10 @@ public class CompletedItem {
         }
 
         return null;
+    }
+
+    public static ArrayList<CompletedItem> toList(Set<CompletedItem> set) {
+        ArrayList<CompletedItem> i = new ArrayList<>(set);
+        return i;
     }
 }

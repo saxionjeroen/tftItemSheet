@@ -2,7 +2,9 @@ package com.example.tftcheatsheet.model;
 
 import com.example.tftcheatsheet.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Item {
@@ -47,7 +49,7 @@ public class Item {
         return items;
     }
 
-    boolean addEndItem(CompletedItem completedItem){
+    boolean addEndItem(CompletedItem completedItem) {
         int tempSize = componentOf.size();
         componentOf.add(completedItem);
         return tempSize + 1 == componentOf.size();
@@ -61,27 +63,31 @@ public class Item {
         return componentOf;
     }
 
-    public static Item getItemById(int id){
-        for(Item i: Item.getItems()){
+    public static Item getItemById(int id) {
+        for (Item i : Item.getItems()) {
             if (i.getId() == id) return i;
         }
 
         return null;
     }
 
-    public String statDesc(){
-        if (getStatTypes() == StatTypes.NONE){
-            return "NONE" ;
+    public String statDesc() {
+        if (getStatTypes() == StatTypes.NONE) {
+            return "NONE";
         }
         return "" + this.getStatTypes().toString() + ": " + this.getStatTypeAmount();
     }
 
-    @Override
-    public String toString() {
-        return
-                "name='" + name ;
+    public static ArrayList<Item> toList() {
+        ArrayList<Item> i = new ArrayList<>();
+        for (int c = 0; c< getItems().size(); c++){
+            i.add(c,null);
+        }
+        for (Item item : getItems()) {
+            i.set(item.id, item);
+        }
+        return i;
     }
-
 
 
 }

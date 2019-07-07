@@ -1,25 +1,47 @@
 package com.example.tftcheatsheet;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.tftcheatsheet.controller.ItemListAdapter;
 import com.example.tftcheatsheet.model.CompletedItem;
 import com.example.tftcheatsheet.model.Item;
 import com.example.tftcheatsheet.model.StatTypes;
 import com.example.tftcheatsheet.view.ItemLayout;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    ItemLayout itemLayout;
+    ListView itemLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        itemLayout = findViewById(R.id.ilBeeg);
-        itemLayout.setItem(null,CompletedItem.getItemById(4));
+        itemLayout = findViewById(R.id.lvItems);
+        itemLayout.setAdapter(new ItemListAdapter(this.getBaseContext(),new ArrayList<>(Item.toList())));
+
+        itemLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, Item.getItemById(position).getName(), Toast.LENGTH_SHORT).show();
+                Item temp = Item.getItemById(position);
+                if (temp!= null)
+                {
+                    Intent i = new Intent(getBaseContext(),CompletedItems.class);
+                    i.putExtra("itemId", position);
+                    startActivityForResult(i, 1234);
+                }
+            }
+        });
     }
 
     static {
@@ -47,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         new CompletedItem(9,"Thornmail", "Reflect 35% of damage taken from attacks.", R.drawable.thornmail, cv, cv);
         new CompletedItem(10,"Phantom Dancer", "Wearer dodges all Critical Strikes.", R.drawable.phantom, cv, rb);
         new CompletedItem(11,"Frozen Heart", "Adjacent enemies lose 20% Attack Speed.", R.drawable.heart, cv, tg);
-        new CompletedItem(12,"Sword Breaker", "Attacks have a chance to disarm.", R.drawable.heart, cv, nc);
+        new CompletedItem(12,"Sword Breaker", "Attacks have a chance to disarm.", R.drawable.swordbreaker, cv, nc);
         new CompletedItem(13,"Red Buff", "Attacks burn for 2.5% max HP and disable healing.", R.drawable.buff, cv, gb);
         new CompletedItem(14,"Knight’s Vow", "Wearer is also a Knight.", R.drawable.knightsvow, cv, sp);
 
         //gb
         new CompletedItem(15,"Titanic Hydra", "Attacks deal 10% of the wearer's max HP as splash.", R.drawable.titanic, gb, rb);
-        new CompletedItem(16,"Morellonomicon", "Spells burn 2.5% of the enemy max HP per second.", R.drawable.titanic, gb, lr);
+        new CompletedItem(16,"Morellonomicon", "Spells burn 2.5% of the enemy max HP per second.", R.drawable.nomicon, gb, lr);
         new CompletedItem(17,"Redemption", "On death heal all nearby allies for 1000 HP.", R.drawable.reemption, gb, tg);
         new CompletedItem(18,"Zephyr", "On start of combat banish an enemy.", R.drawable.zephyr, gb, nc);
         new CompletedItem(19,"Warmog's Armor", "Regenerate 3% max Health per second.", R.drawable.warmog, gb, gb);

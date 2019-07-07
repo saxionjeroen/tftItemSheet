@@ -62,15 +62,17 @@ public class ItemLayout extends LinearLayout {
         this.item = item;
         this.completedItem = completedItem;
 
-        if (item != null) {
+        if (completedItem == null) {
             tvName.setText(item.getName());
             tvDesc.setText("");
             tvStats.setText("" + item.statDesc());
             ivItem.setImageDrawable(ContextCompat.getDrawable(getContext(), item.getResId()));
         } else {
-            tvName.setText(completedItem.getName());
+            Item otherComp = completedItem.getComponentOne();
+            if (otherComp.getId() == item.getId()) otherComp = completedItem.getComponentTwo();
+            tvStats.setText(completedItem.getName());
             tvDesc.setText(completedItem.getDescription());
-            tvStats.setText(completedItem.statDesc());
+            tvName.setText(otherComp.getName());
             ivItem.setImageDrawable(ContextCompat.getDrawable(getContext(), completedItem.getResId()));
         }
     }
